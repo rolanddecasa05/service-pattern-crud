@@ -7,15 +7,21 @@ use Illuminate\Database\Eloquent\Model;
 
 class EloquentRepository {
     use DBtransactionHandler;
-    
+
     public function __construct(public Model $model) {}
 
-    public function find(array $attr)
+    public function find(array $attr, string $relation)
     {
-        return $this->model::paginate((array_key_exists('paginate', $attr)) ? $attr['paginate'] : 10);
+        $query = $this->model->query();
+
+        if(array_key_exists('name', $attr)) {
+            $query->where('name', 'LIKE', '%'.$attr['name'].'%');
+        }
+        
+        return $query->with($relation)->orderBy('id', 'DESC')->paginate(array_key_exists('paginate', $attr) ? $attr['paginate'] : 10);
     }
 
-    public function findById($id)
+    public function findById(string $id, string $relation)
     {
         return $this->model::findOrFail($id);
     }

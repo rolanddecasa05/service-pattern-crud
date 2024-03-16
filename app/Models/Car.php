@@ -10,10 +10,16 @@ class Car extends Model
 {
     use HasFactory, SoftDeletes;
 
-    protected $fillables = [
+    protected $fillable = [
        'name',
        'model',
         'make',
         'vin',
+        'user_id'
     ];
+
+    public function users()
+    {
+        return $this->belongsTo(User::class, 'user_id');
+    }
 }

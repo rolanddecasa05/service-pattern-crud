@@ -4,32 +4,33 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Commude\Services\UserService;
+use App\Http\Requests\CreateUserValidator;
 
 class UserController extends Controller
 {
     public function __construct(public UserService $service) {}
-    /**
+   /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
-        return $this->service->find([]);
-    }
+        $data = $this->service->find($request->all());
 
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
-    {
-        //
+        return response()->json($data, 200);
     }
 
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(CreateUserValidator $request)
     {
-        //
+        try {
+            $data = $this->service->create(data:$request->all());
+            return response()->json($data, 200);
+
+        } catch (\Throwable $th) {
+            return response()->json(['error' => $th->getMessage()], 422);
+        }   
     }
 
     /**
@@ -37,15 +38,8 @@ class UserController extends Controller
      */
     public function show(string $id)
     {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(string $id)
-    {
-        //
+        $data = $this->service->findById(id:$id);
+        return response()->json($data, 200);
     }
 
     /**
@@ -53,7 +47,13 @@ class UserController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        //
+        try {
+            $this->service->update(id: $id, data:$request->all());
+            return response()->json(['message' => 'Update success'], 200);
+
+        } catch (\Throwable $th) {
+            return response()->json(['error' => $th->getMessage()], 422);
+        } 
     }
 
     /**
@@ -61,6 +61,12 @@ class UserController extends Controller
      */
     public function destroy(string $id)
     {
-        //
+        try {
+            $data = $this->service->delete(id: $id);
+            return response()->json($data, 200);
+
+        } catch (\Throwable $th) {
+            return response()->json(['error' => $th->getMessage()], 422);
+        } 
     }
 }

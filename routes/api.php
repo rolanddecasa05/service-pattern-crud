@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\CarController;
 use App\Http\Controllers\LoginController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -16,9 +17,14 @@ use App\Http\Controllers\UserController;
 |
 */
 
-Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
-    return $request->user();
-});
+Route::get('/', function (Request $request) {
+    return response()->json(['message' => 'access denied'], 422);
+})->name('index');
 
-Route::resource('/auth', LoginController::class);
-Route::resource('/users', UserController::class);
+Route::post('/auth/register', [UserController::class, 'store']);
+Route::post('/auth/login', [LoginController::class, 'loginUser']);
+
+Route::middleware('auth:sanctum')->group(function() {
+    Route::resource('users', UserController::class);
+    Route::resource('cars', CarController::class);
+});

@@ -2,23 +2,24 @@
 
 namespace App\Commude\Services;
 
-use App\Commude\Contracts\UserInterface;
+use App\Commude\Contracts\CarInterface;
+use App\Events\CarAddedEvent;
 
-class UserService {
-    public function __construct(public UserInterface $repository) {}
+class CarService {
+    public function __construct(public CarInterface $repository) {}
 
     public function find(array $attr)
     {
-        return $this->repository->find($attr, 'cars');
+        return $this->repository->find($attr, 'users');
     }
 
     public function findById($id) {
-        return $this->repository->findByid($id, 'cars');
+        return $this->repository->findByid($id, 'users');
     }
 
     public function create($data)
     {
-        return $this->repository->create(data: $data);
+        return CarAddedEvent::dispatch($data);
     }
 
     public function update($id, $data)

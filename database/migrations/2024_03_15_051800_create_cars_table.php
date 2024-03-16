@@ -13,6 +13,7 @@ return new class extends Migration
     {
         Schema::create('cars', function (Blueprint $table) {
             $table->id()->unsigned();
+            $table->integer('user_id')->unsigned();
             $table->string('name');
             $table->string('model')->unique();
             $table->string('make')->unique();
