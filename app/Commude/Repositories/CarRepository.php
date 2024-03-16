@@ -12,9 +12,4 @@ class CarRepository extends EloquentRepository implements CarInterface {
     {
         parent::__construct($this->car);
     }
-
-    public function findWith(array $attr)
-    {
-        return $this->model::with('user')->paginate((array_key_exists('paginate', $attr)) ? $attr['paginate'] : 10);
-    }
 }
