@@ -16,9 +16,9 @@ class UserApiTest extends TestCase
     {
         $data = [
             'name' => fake()->name(),
-            'email' => fake()->email(),
+            'email' => fake()->unique()->email(),
             'password' => '123456789',
-            'username' => fake()->userName(),
+            'username' => fake()->unique()->userName(),
         ];
 
         $response = $this->withHeaders([

@@ -17,8 +17,8 @@ class CarApiTest extends TestCase
     {
         $data = [
             'name' => fake()->domainName(),
-            'model' => fake()->company(),
-            'make' => fake()->domainWord(),
+            'model' => fake()->unique()->company(),
+            'make' => fake()->unique()->domainWord(),
             'vin' => fake()->tld(),
             'user_id' => User::all()->random()->id,
         ];

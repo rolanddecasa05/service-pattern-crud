@@ -17,8 +17,8 @@ class CarAddedListener
     /**
      * Handle the event.
      */
-    public function handle(CarAddedEvent $event): void
+    public function handle(CarAddedEvent $event)
     {
-        $this->repository->create($event->data);
+        return $this->repository->create($event->data);
     }
 }
